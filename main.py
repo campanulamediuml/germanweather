@@ -35,7 +35,7 @@ def try_result(url):
         result = [[]]
     return result
 
-year = range(1990,2018)
+year = range(1990,2017)
 month = range(1,13)
 url = []
 for i in year:
@@ -54,4 +54,4 @@ for i in result_list:
 fh = open('weather.txt','a')
 for i in result:
     fh.write(i.encode('utf-8'))
-close()
+fh.close()

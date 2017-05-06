@@ -29,10 +29,10 @@ def get_weather(url):
     return result
 
 def try_result(url):
-    try:
-        result = get_weather(url)
-    except:
-        result = [[]]
+    #try:
+    result = get_weather(url)
+    #except:
+        #result = [[]]
     return result
 
 year = range(1990,2017)
@@ -46,12 +46,11 @@ pool = ThreadPool(200)
 result_list = pool.map(try_result,url)
 result = []
 for i in result_list:
-    if len(i) == 10:
-        result = extend(i)
-    else:
-        continue
+    result.extend(i)
+
 
 fh = open('weather.txt','a')
 for i in result:
-    fh.write(i.encode('utf-8'))
+    for j in i:
+        fh.write(i.encode('utf-8'))
 fh.close()

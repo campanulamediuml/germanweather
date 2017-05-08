@@ -57,6 +57,7 @@ for i in dates:
 #读取date文件的内容，把这些内容逐行读取出来储存成列表
 
 count = 0
+
 for date in date_time:
     url = 'http://www.wetterkontor.de/de/wetter/deutschland/monatswerte.asp?y='+date[0]+'&m='+date[1]
     #格式化网页信息

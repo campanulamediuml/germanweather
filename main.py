@@ -18,8 +18,8 @@ def get_weather(url):
         i = filter(str.isdigit,i)
         tmp.append(i)
     #过滤出其中的数字
-    if len(time[1]) == 1:
-        time[1] = '0'+time[1]
+    if len(tmp[1]) == 1:
+        tmp[1] = '0'+tmp[1]
     time = '/'.join(tmp)
     #把数字信息挑选出来
     page_html = method.get_htmlsoup(url)
@@ -30,7 +30,7 @@ def get_weather(url):
     result = []
     for place in weatherlist:
         attribute = place.find_all('td')
-        tmp = [time,'\t']#列表内容用tab分割
+        tmp = [time]#列表内容用tab分割
         for i in attribute:
             i = (i.get_text()).replace('\n',' ')
             tmp.append((i.strip()).encode('utf-8'))
@@ -57,19 +57,17 @@ for i in dates:
 #读取date文件的内容，把这些内容逐行读取出来储存成列表
 
 count = 0
-
 for date in date_time:
     url = 'http://www.wetterkontor.de/de/wetter/deutschland/monatswerte.asp?y='+date[0]+'&m='+date[1]
     #格式化网页信息
     result = get_weather(url)
-    print date
-
     count = count+1
     tmp = date_time[count:]
     #以下内容用于断点续传
     fh = open('date.txt','w')
     for i in tmp:
         fh.write('\t'.join(i)+'\n')
+    print 'refresh successful'
     #更新日期列表
     for i in result:
         if len(i) == 5:

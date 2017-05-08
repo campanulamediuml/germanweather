@@ -2,6 +2,11 @@
 import method
 from bs4 import BeautifulSoup
 from multiprocessing.dummy import Pool as ThreadPool
+import MySQLdb as mydatabase
+
+conn = mydatabase.connect(host='117.25.155.149', port=3306, user='gelinroot', passwd='glt#789A', db='db_data2force', charset='utf8')
+cursor = conn.cursor()
+
 
 def get_weather(url):
     time = url.split('/')
@@ -27,10 +32,17 @@ def get_weather(url):
         for i in attribute:
             i = (i.get_text()).replace('\n',' ')
             tmp.append((i.strip()).encode('utf-8'))
-            tmp.append('\t')
+            #tmp.append('\t')
         result.append(tmp) 
         #把天气信息储存成列表，列表第一项为时间       
     return result
+
+try:
+    sql = """CREATE TABLE German_Weather_data(id INT(11)primary key auto_increment,Date_Time VARCHAR(200),cities TEXT(1000),Temp TEXT(1000),Summe_1 VARCHAR(200),Summe_2 TEXT(1000))"""
+    cursor.execute(sql)
+except:
+    print 'table exists..'
+
 
 
 fh = open('date.txt','r')
@@ -56,8 +68,8 @@ for date in date_time:
     for i in tmp:
         fh.write('\t'.join(i)+'\n')
     #更新日期列表
-    fh = open('weather.txt','a')
-    for i in result[1:]:
-        fh.write(''.join(i)+'\n')
-    fh.close()
+    for i in result:
+        cursor.execute('INSERT INTO German_Weather_data(Date_Time,cities,Temp,Summe_1,Summe_2)  values(%s,%s,%s,%s,%s)',i) 
+        
+        conn.commit()
     #保存程序

@@ -18,6 +18,8 @@ def get_weather(url):
         i = filter(str.isdigit,i)
         tmp.append(i)
     #过滤出其中的数字
+    if len(time[1]) == 1:
+        time[1] = '0'+time[1]
     time = '/'.join(tmp)
     #把数字信息挑选出来
     page_html = method.get_htmlsoup(url)
@@ -69,7 +71,14 @@ for date in date_time:
         fh.write('\t'.join(i)+'\n')
     #更新日期列表
     for i in result:
-        cursor.execute('INSERT INTO German_Weather_data(Date_Time,cities,Temp,Summe_1,Summe_2)  values(%s,%s,%s,%s,%s)',i) 
-        
-        conn.commit()
+        if len(i) == 5:
+            try:
+                cursor.execute('INSERT INTO German_Weather_data(Date_Time,cities,Temp,Summe_1,Summe_2)  values(%s,%s,%s,%s,%s)',i) 
+                count = count+1
+                if count%50 == 0:
+                    conn.commit()
+            except:
+                print i
     #保存程序
+
+conn.commit()

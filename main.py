@@ -55,7 +55,7 @@ for i in dates:
     tmp = i.split('\t')
     date_time.append(tmp)
 #读取date文件的内容，把这些内容逐行读取出来储存成列表
-
+#result_count = 0
 count = 0
 for date in date_time:
     url = 'http://www.wetterkontor.de/de/wetter/deutschland/monatswerte.asp?y='+date[0]+'&m='+date[1]
@@ -70,14 +70,16 @@ for date in date_time:
     print 'refresh successful'
     #更新日期列表
     for i in result:
-        if len(i) == 5:
+
+        if len(i) == 5 and '' not in i:
             try:
                 cursor.execute('INSERT INTO German_Weather_data(Date_Time,cities,Temp,Summe_1,Summe_2)  values(%s,%s,%s,%s,%s)',i) 
-                count = count+1
-                if count%50 == 0:
-                    conn.commit()
+                # result_count = result_count+1
+                # if result_count%50 == 0:
+                #     conn.commit()
             except:
                 print i
     #保存程序
+    conn.commit()
 
 conn.commit()

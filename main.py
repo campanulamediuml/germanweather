@@ -68,6 +68,7 @@ for date in date_time:
     for i in tmp:
         fh.write('\t'.join(i)+'\n')
     print 'refresh successful'
+    fh.close()
     #更新日期列表
     for i in result:
 

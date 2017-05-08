@@ -27,12 +27,6 @@ def get_weather(url):
         result.append(tmp)        
     return result
 
-# def try_result(url):
-#     try:
-#         result = get_weather(url)
-#     except:
-#         result = [[]]
-#     return result
 fh = open('date.txt','r')
 dates = fh.readlines()
 date_time = []
@@ -40,9 +34,6 @@ for i in dates:
     i = i.strip()
     tmp = i.split('\t')
     date_time.append(tmp)
-
-#print date_time
-
 
 count = 0
 for date in date_time:
@@ -58,26 +49,3 @@ for date in date_time:
     for i in result[1:]:
         fh.write(''.join(i)+'\n')
     fh.close()
-
-
-# year = range(1990,2017)
-# month = range(1,13)
-# url = []
-# for i in year:
-#     for j in month:
-#         tmp = 'http://www.wetterkontor.de/de/wetter/deutschland/monatswerte.asp?y='+str(i)+'&m='+str(j)
-#         url.append(tmp)
-
-# pool = ThreadPool(10)
-# result_list = pool.map(get_weather,url)
-# result = []
-# for i in result_list:
-#     result.extend(i)
-
-# print result
-
-# fh = open('weather.txt','a')
-# for i in result:
-#     for j in i:
-#         fh.write(i.encode('utf-8'))
-# fh.close()
